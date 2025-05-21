@@ -2,6 +2,7 @@ package com.example.countries.service;
 
 import com.example.countries.data.entity.CountryEntity;
 import com.example.countries.data.repository.CountryRepository;
+import com.example.countries.ex.CountryNotFoundException;
 import com.example.countries.model.CountryJson;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,6 @@ public class CountryService {
 
     public CountryJson findCountryById(String id) {
         return countryRepository.findById(UUID.fromString(id)).map(CountryJson::convertInJson)
-                .orElseThrow(
-                        () -> new RuntimeException(
-                                "Страны с id %s не существует".formatted(id)));
+                .orElseThrow(CountryNotFoundException::new);
     }
 }
