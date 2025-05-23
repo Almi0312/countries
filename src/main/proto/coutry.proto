@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package com.example.grpc.countries;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc.countries";
+option java_outer_classname = "CountriesProto";
+
+service CountryService {
+    rpc Create(stream CountryRequest) returns (CreateSummaryResponse) {}
+    rpc GetCountry(IdCountry) returns (CountryResponse) {}
+    rpc GetAll(google.protobuf.Empty) returns (GetAllCountryResponse) {}
+    rpc Update(CountryResponse) returns (CountryResponse) {}
+    rpc Delete(IdCountry) returns (DeleteCountryResponse) {}
+}
+
+message CountryResponse {
+    string id = 1;
+    string title = 2;
+    string code = 3;
+}
+
+message IdCountry {
+    string id = 1;
+}
+
+message CountryRequest {
+    string title = 1;
+    string code = 2;
+}
+
+message GetAllCountryResponse {
+    repeated CountryResponse countries = 1;
+}
+
+message DeleteCountryResponse {
+    bool success = 1;
+}
+
+message CreateSummaryResponse {
+  int32 created_count = 1;
+  repeated string errors = 2;
+}
